@@ -1,12 +1,14 @@
 {
 	"name": "next-route",
+	"description": "Type-safe route builder utility for Next.js",
 	"type": "module",
 	"exports": {
-		".": "./src/entry/index.js",
-		"./hooks": "./src/entry/hooks.js"
+		".": "./src/index.ts",
+		"./hooks": "./src/hooks.ts"
 	},
 	"scripts": {
-		"lint": "eslint --cache --fix ."
+		"lint": "eslint --cache --fix .",
+		"build": "ts-node ./scripts/build.ts"
 	},
 	"dependencies": {
 		"ky": "^0.32.2",
@@ -18,7 +20,8 @@
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.25",
-		"lionconfig": "^2.0.0",
+		"execa": "^6.1.0",
+		"lionconfig": "file:../../lionconfig/packages/lionconfig/dist",
 		"next": "^13.0.5",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
