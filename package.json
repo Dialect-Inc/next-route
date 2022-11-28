@@ -7,6 +7,9 @@
 		".": "./src/index.ts",
 		"./hooks": "./src/hooks.ts"
 	},
+	"lionp": {
+		"tests": false
+	},
 	"scripts": {
 		"lint": "eslint --cache --fix .",
 		"build": "ts-node ./scripts/build.ts"
