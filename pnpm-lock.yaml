@@ -4,7 +4,7 @@ specifiers:
   '@types/react': ^18.0.25
   execa: ^6.1.0
   ky: ^0.32.2
-  lionconfig: ^2.1.0
+  lionconfig: ^2.1.2
   next: ^13.0.5
   p-wait-for: ^5.0.0
   react: ^18.2.0
@@ -26,7 +26,7 @@ dependencies:
 devDependencies:
   '@types/react': 18.0.25
   execa: 6.1.0
-  lionconfig: 2.1.0_typescript@4.9.3
+  lionconfig: 2.1.2_typescript@4.9.3
   next: 13.0.5_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -5681,8 +5681,8 @@ packages:
       pkg-up: 4.0.0
     dev: true
 
-  /lionconfig/2.1.0_typescript@4.9.3:
-    resolution: {integrity: sha512-nKaFbbNOReoKSbx0LK/snbfSMRmEyrqsRMX4UcGVKRJc5OuTcymxRfwlxVevDLKVdqTH4Wq31IQ33NRq6c4F7Q==}
+  /lionconfig/2.1.2_typescript@4.9.3:
+    resolution: {integrity: sha512-LvLslGNZdNBmQBlWTPG8fBqUFvW7nBvQj88P5iZaXQL7RaaytBF+XT/9lEPeaAwOmZlQ6PWBjP9G0tbNzLfFQQ==}
     hasBin: true
     dependencies:
       '@commitlint/cli': 17.3.0_@swc+core@1.3.20
@@ -5757,7 +5757,7 @@ packages:
       type-fest: 3.3.0
       update-notifier: 6.0.2
       webpack: /ignoredep/25.9999.0
-      xo: 0.53.1_ignoredep@25.9999.0
+      xo: 0.53.1_j7u5caugdq5s7kcry4majb62jm
     transitivePeerDependencies:
       - '@swc/wasm'
       - bluebird
@@ -8845,7 +8845,7 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /xo/0.53.1_ignoredep@25.9999.0:
+  /xo/0.53.1_j7u5caugdq5s7kcry4majb62jm:
     resolution: {integrity: sha512-/2R8SPehv1UhiIqJ9uSvrAjslcoygICNsUlEb/Zf2V6rMtr7YCoggc6hlt6b/kbncpR989Roqt6AvEO779dFxw==}
     engines: {node: '>=14.16'}
     hasBin: true
@@ -8856,15 +8856,12 @@ packages:
         optional: true
     dependencies:
       '@eslint/eslintrc': 1.3.3
-      '@typescript-eslint/eslint-plugin': 5.45.0_czs5uoqkd3podpy6vgtsxfc7au
-      '@typescript-eslint/parser': 5.45.0_hsf322ms6xhhd4b5ne6lb74y4a
       arrify: 3.0.0
       cosmiconfig: 7.1.0
       define-lazy-prop: 3.0.0
       eslint: 8.28.0
       eslint-config-prettier: 8.5.0_eslint@8.28.0
       eslint-config-xo: 0.43.1_eslint@8.28.0
-      eslint-config-xo-typescript: 0.55.0_2bg4zk75plhcth7wswe3tu5xji
       eslint-formatter-pretty: 4.1.0
       eslint-import-resolver-webpack: 0.13.2_vaezxk2hyfnncf5nd77py7moyy
       eslint-plugin-ava: 13.2.0_eslint@8.28.0
@@ -8893,6 +8890,7 @@ packages:
       typescript: 4.9.3
       webpack: /ignoredep/25.9999.0
     transitivePeerDependencies:
+      - '@typescript-eslint/parser'
       - eslint-import-resolver-typescript
       - supports-color
     dev: true
