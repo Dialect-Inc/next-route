@@ -6,12 +6,12 @@ import type {
 } from 'next'
 import * as superjson from 'superjson'
 import invariant from 'tiny-invariant'
-import type { Promisable } from 'type-fest'
 import { z } from 'zod'
 
 import type { RouteContext } from '~/types/context.js'
 import type { GetRoute, GetRouteArgs } from '~/types/get.js'
 import type { PostRoute, PostRouteArgs } from '~/types/post.js'
+import { Promisable } from '~/types/promise.js'
 import type { RouteResponse, RouteResponseFromData } from '~/types/route.js'
 import { isRedirectError } from '~/utils/redirect.js'
 import { reply } from '~/utils/reply.js'
