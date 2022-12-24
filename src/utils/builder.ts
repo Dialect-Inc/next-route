@@ -25,7 +25,7 @@ export function createRouteBuilder(routeBuilderOptions?: {
 	beforeGetServerSideProps?(
 		context: GetServerSidePropsContext
 	): Promisable<void>,
-	onError?(error: unknown): Promisable<undefined | RouteResponse<Route>>,
+	onError?(error: unknown): Promisable<void | RouteResponse<Route>>,
 }) {
 	function defineRoute<Path extends string, Args extends GetRouteArgs<Path>>(
 		args: Args
