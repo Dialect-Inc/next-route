@@ -1,6 +1,6 @@
 {
 	"name": "next-ts-route",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Type-safe route builder utility for Next.js",
 	"type": "module",
 	"exports": {
