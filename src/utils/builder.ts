@@ -12,19 +12,20 @@ import type { RouteContext } from '~/types/context.js'
 import type { GetRoute, GetRouteArgs } from '~/types/get.js'
 import type { PostRoute, PostRouteArgs } from '~/types/post.js'
 import { Promisable } from '~/types/promise.js'
-import type { RouteResponse, RouteResponseFromData } from '~/types/route.js'
+import type { Route, RouteResponse, RouteResponseFromData } from '~/types/route.js'
 import { isRedirectError } from '~/utils/redirect.js'
 import { reply } from '~/utils/reply.js'
 
 export function createRouteBuilder(routeBuilderOptions?: {
-	beforeRouteHandler?: (args: {
+	beforeRouteHandler?(args: {
 		req: NextApiRequest
 		res: NextApiResponse
 		options: any
-	}) => Promise<void>
-	beforeGetServerSideProps?: (
+	}): Promisable<void>
+	beforeGetServerSideProps?(
 		context: GetServerSidePropsContext
-	) => Promise<void>
+	): Promisable<void>,
+	onError?(error: unknown): Promisable<undefined | RouteResponse<Route>>,
 }) {
 	function defineRoute<Path extends string, Args extends GetRouteArgs<Path>>(
 		args: Args
@@ -78,6 +79,14 @@ export function createRouteBuilder(routeBuilderOptions?: {
 				reply(res, response)
 				return
 			} catch (error: unknown) {
+				if (routeBuilderOptions?.onError !== undefined) {
+					const response = await routeBuilderOptions?.onError?.(error)
+					if (response !== undefined) {
+						reply(res, response)
+						return
+					}
+				}
+
 				if (isRedirectError(error)) {
 					const location = (error as any).extensions.redirectUrl as string
 					invariant(location, '`location` should not be undefined')
