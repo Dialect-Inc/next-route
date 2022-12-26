@@ -1,6 +1,7 @@
 import type {
 	GetServerSideProps,
 	GetServerSidePropsContext,
+	GetServerSidePropsResult,
 	NextApiRequest,
 	NextApiResponse,
 } from 'next'
@@ -25,7 +26,8 @@ export function createRouteBuilder(routeBuilderOptions?: {
 	beforeGetServerSideProps?(
 		context: GetServerSidePropsContext
 	): Promisable<void>,
-	onError?(error: unknown): Promisable<void | RouteResponse<Route>>,
+	onRouteError?(error: unknown): Promisable<void | RouteResponse<Route>>,
+	onServerSidePropsError?(error: unknown): Promisable<GetServerSidePropsResult<any>>
 }) {
 	function defineRoute<Path extends string, Args extends GetRouteArgs<Path>>(
 		args: Args
@@ -79,8 +81,8 @@ export function createRouteBuilder(routeBuilderOptions?: {
 				reply(res, response)
 				return
 			} catch (error: unknown) {
-				if (routeBuilderOptions?.onError !== undefined) {
-					const response = await routeBuilderOptions?.onError?.(error)
+				if (routeBuilderOptions?.onRouteError !== undefined) {
+					const response = await routeBuilderOptions?.onRouteError?.(error)
 					if (response !== undefined) {
 						reply(res, response)
 						return
@@ -145,9 +147,9 @@ export function createRouteBuilder(routeBuilderOptions?: {
 		handler: (context: GetServerSidePropsContext) => R | Promise<R>
 	): GetServerSideProps<R> {
 		const getServerSideProps: GetServerSideProps = async (context) => {
-			await routeBuilderOptions?.beforeGetServerSideProps?.(context)
-
 			try {
+				await routeBuilderOptions?.beforeGetServerSideProps?.(context)
+
 				const serverData = await handler(context)
 
 				return {
@@ -156,12 +158,21 @@ export function createRouteBuilder(routeBuilderOptions?: {
 					},
 				}
 			} catch (error: unknown) {
-				if ((error as any).extensions?.redirectUrl) {
+				if (routeBuilderOptions?.onServerSidePropsError !== undefined) {
+					const response = await routeBuilderOptions?.onServerSidePropsError?.(error)
+					if (response !== undefined) {
+						return response
+					}
+				}
+
+				if (isRedirectError(error)) {
+					const location = (error as any).extensions.redirectUrl as string
+					invariant(location, '`location` should not be undefined')
 					return {
 						redirect: {
-							destination: (error as any).extensions.redirectUrl as string,
-							permanent: false,
-						},
+							destination: location,
+							permanent: false
+						}
 					}
 				}
 
