@@ -27,7 +27,7 @@ export function createRouteBuilder(routeBuilderOptions?: {
 		context: GetServerSidePropsContext
 	): Promisable<void>,
 	onRouteError?(error: unknown): Promisable<void | RouteResponse<Route>>,
-	onServerSidePropsError?(error: unknown): Promisable<GetServerSidePropsResult<any>>
+	onGetServerSidePropsError?(error: unknown): Promisable<GetServerSidePropsResult<any> | void>
 }) {
 	function defineRoute<Path extends string, Args extends GetRouteArgs<Path>>(
 		args: Args
@@ -158,8 +158,8 @@ export function createRouteBuilder(routeBuilderOptions?: {
 					},
 				}
 			} catch (error: unknown) {
-				if (routeBuilderOptions?.onServerSidePropsError !== undefined) {
-					const response = await routeBuilderOptions?.onServerSidePropsError?.(error)
+				if (routeBuilderOptions?.onGetServerSidePropsError !== undefined) {
+					const response = await routeBuilderOptions?.onGetServerSidePropsError?.(error)
 					if (response !== undefined) {
 						return response
 					}
