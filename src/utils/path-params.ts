@@ -1,4 +1,4 @@
-import type { IsEqual } from 'type-fest/source/internal.js'
+import type { IsEqual } from 'type-fest'
 
 import type { ServerContext } from '~/types/context.js'
 import type { Route, RouteData } from '~/types/route.js'
