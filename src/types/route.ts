@@ -33,7 +33,7 @@ export type RouteResponse<R extends Route> = (
 			data: R extends Route<infer Data> ? Data['response'] : never
 			errors?: Array<{
 				message: string
-				extensions?: { code?: string; payload?: Record<string, unknown> }
+				extensions?: { key?: string; payload?: Record<string, unknown> }
 			}>
 	  }
 ) & {
@@ -50,7 +50,7 @@ export interface RouteResponseFromData<D> {
 	data: D
 	errors?: Array<{
 		message: string
-		extensions?: { code?: string; payload?: Record<string, unknown> }
+		extensions?: { key?: string; payload?: Record<string, unknown> }
 	}>
 	extensions?: {
 		redirectUrl?: string
