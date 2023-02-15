@@ -11,8 +11,12 @@ import { z } from 'zod'
 import type { RouteContext } from '~/types/context.js'
 import type { GetRoute, GetRouteArgs } from '~/types/get.js'
 import type { PostRoute, PostRouteArgs } from '~/types/post.js'
-import { Promisable } from '~/types/promise.js'
-import type { Route, RouteResponse, RouteResponseFromData } from '~/types/route.js'
+import { type Promisable } from '~/types/promise.js'
+import type {
+	Route,
+	RouteResponse,
+	RouteResponseFromData,
+} from '~/types/route.js'
 import { isRedirectError } from '~/utils/redirect.js'
 import { reply } from '~/utils/reply.js'
 
@@ -24,9 +28,11 @@ export function createRouteBuilder(routeBuilderOptions?: {
 	}): Promisable<void>
 	beforeGetServerSideProps?(
 		context: GetServerSidePropsContext
-	): Promisable<void>,
-	onRouteError?(error: unknown): Promisable<void | RouteResponse<Route>>,
-	onGetServerSidePropsError?(error: unknown): Promisable<GetServerSidePropsResult<any> | void>
+	): Promisable<void>
+	onRouteError?(error: unknown): Promisable<void | RouteResponse<Route>>
+	onGetServerSidePropsError?(
+		error: unknown
+	): Promisable<GetServerSidePropsResult<any> | void>
 }) {
 	function defineRoute<Path extends string, Args extends GetRouteArgs<Path>>(
 		args: Args
@@ -74,14 +80,13 @@ export function createRouteBuilder(routeBuilderOptions?: {
 					await z.object(args.headers({ req, res })).parseAsync(req.headers)
 				}
 
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 				const response = await handlerFunction({ req, res })
 
 				reply(res, response)
 				return
 			} catch (error: unknown) {
 				if (routeBuilderOptions?.onRouteError !== undefined) {
-					const response = await routeBuilderOptions?.onRouteError?.(error)
+					const response = await routeBuilderOptions.onRouteError(error)
 					if (response !== undefined) {
 						reply(res, response)
 						return
@@ -153,12 +158,14 @@ export function createRouteBuilder(routeBuilderOptions?: {
 
 				return {
 					props: {
-						serverData
+						serverData,
 					},
 				}
 			} catch (error: unknown) {
 				if (routeBuilderOptions?.onGetServerSidePropsError !== undefined) {
-					const response = await routeBuilderOptions?.onGetServerSidePropsError?.(error)
+					const response = await routeBuilderOptions.onGetServerSidePropsError(
+						error
+					)
 					if (response !== undefined) {
 						return response
 					}
@@ -170,8 +177,8 @@ export function createRouteBuilder(routeBuilderOptions?: {
 					return {
 						redirect: {
 							destination: location,
-							permanent: false
-						}
+							permanent: false,
+						},
 					}
 				}
 
