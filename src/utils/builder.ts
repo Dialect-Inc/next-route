@@ -5,7 +5,6 @@ import type {
 	NextApiRequest,
 	NextApiResponse,
 } from 'next'
-import * as superjson from 'superjson'
 import invariant from 'tiny-invariant'
 import { z } from 'zod'
 
@@ -154,7 +153,7 @@ export function createRouteBuilder(routeBuilderOptions?: {
 
 				return {
 					props: {
-						serverData: superjson.stringify(serverData),
+						serverData
 					},
 				}
 			} catch (error: unknown) {
