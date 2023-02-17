@@ -154,12 +154,10 @@ export function createRouteBuilder(routeBuilderOptions?: {
 			try {
 				await routeBuilderOptions?.beforeGetServerSideProps?.(context)
 
-				const serverData = await handler(context)
+				const props = await handler(context)
 
 				return {
-					props: {
-						serverData,
-					},
+					props,
 				}
 			} catch (error: unknown) {
 				if (routeBuilderOptions?.onGetServerSidePropsError !== undefined) {
