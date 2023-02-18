@@ -12,11 +12,7 @@ import type { RouteContext } from '~/types/context.js'
 import type { GetRoute, GetRouteArgs } from '~/types/get.js'
 import type { PostRoute, PostRouteArgs } from '~/types/post.js'
 import { type Promisable } from '~/types/promise.js'
-import type {
-	Route,
-	RouteResponse,
-	RouteResponseFromData,
-} from '~/types/route.js'
+import type { Route, RouteResponse } from '~/types/route.js'
 import { isRedirectError } from '~/utils/redirect.js'
 import { reply } from '~/utils/reply.js'
 
@@ -147,18 +143,16 @@ export function createRouteBuilder(routeBuilderOptions?: {
 		}
 	}
 
-	function defineGetServerSideProps<R extends RouteResponseFromData<any>>(
+	function defineGetServerSideProps<R extends ReturnType<GetServerSideProps>>(
 		handler: (context: GetServerSidePropsContext) => R | Promise<R>
 	): GetServerSideProps<R> {
 		const getServerSideProps: GetServerSideProps = async (context) => {
 			try {
 				await routeBuilderOptions?.beforeGetServerSideProps?.(context)
 
-				const props = await handler(context)
+				const data = await handler(context)
 
-				return {
-					props,
-				}
+				return data
 			} catch (error: unknown) {
 				if (routeBuilderOptions?.onGetServerSidePropsError !== undefined) {
 					const response = await routeBuilderOptions.onGetServerSidePropsError(
